@@ -76,7 +76,7 @@ for how to do it properly.
     .....
 
     const fromAddr = "johnsmith@gmail.com"
-	const toAddr = "janesmith@gmail.com"
+    const toAddr = "janesmith@gmail.com"
     const subject = "the email subject"
 
     // Create an optional slog logger.  The Config type supplies methods such as LogError 
@@ -86,39 +86,39 @@ for how to do it properly.
     // Configure the email connection.  This one connects to John Smith's
     // gmail account via a TLS connection, authenticating with his Google password.
     cfg := email.NewConfigWithLogger(
-		"smtp.gmail.com",   // mail server.
-		465,                // Port.
-		fromAddr, 
-		"googlepassword",   // This should be supplied as a secret.
-		true,               // Secure connection.
-		true,               // Secured via TLS.
-		5 * time.Second,    // Connection timeout.
-		logger,
-	)
+        "smtp.gmail.com",   // mail server.
+        465,                // Port.
+        fromAddr, 
+        "googlepassword",   // This should be supplied as a secret.
+        true,               // Secure connection.
+        true,               // Secured via TLS.
+        5 * time.Second,    // Connection timeout.
+        logger,
+    )
 
     connection, connError := email.Connect(cfg)
-	if connError != nil {
-		cfg.LogError(connError.Error())
-		return
-	}
-	defer connection.Close()
+    if connError != nil {
+        cfg.LogError(connError.Error())
+        return
+    }
+    defer connection.Close()
 
     attachment, attError := email.NewAttachment("./attachment.txt", "attachment.txt")
-	if attError != nil {
-		cfg.LogError(attError.Error())
-		return
-	}
+    if attError != nil {
+        cfg.LogError(attError.Error())
+        return
+    }
 
-	attachments := []email.Attachment{*attachment}
+    attachments := []email.Attachment{*attachment}
 
     const body = "<html><h1>this is a heading</h1>this is the running text</html>"
 
-	em := email.NewEmail(cfg, fromAddr, toAddr, "the subject", body, attachments)
+    em := email.NewEmail(cfg, fromAddr, toAddr, "the subject", body, attachments)
 
-	if err := em.Send(connection); err != nil {
-		cfg.LogError(err.Error())
-		return
-	}
+    if err := em.Send(connection); err != nil {
+        cfg.LogError(err.Error())
+        return
+    }
 
     connection.Close()
 
@@ -149,9 +149,9 @@ for how to do it properly.
     Then get the content type like so:
 
 ```go
-	const body = "<html><h1>this is a heading</h1>this is the running text</html>"
-	mimeTypeOfBody := mimetype.Detect([]byte(body))
-	contentTypeOfBody := mail.ContentType(mimeTypeOfBody.String())
+    const body = "<html><h1>this is a heading</h1>this is the running text</html>"
+    mimeTypeOfBody := mimetype.Detect([]byte(body))
+    contentTypeOfBody := mail.ContentType(mimeTypeOfBody.String())
 ```
 
    To figure out the content type of a file, given the name in filename,
@@ -159,18 +159,18 @@ for how to do it properly.
 
 ```go
     var openError error
-	var f *os.File
-	f, openError = os.Open(filename)
-	if openError != nil {
-		return "", openError
-	}
-	defer f.Close()
-	var detectError error
-	var mimeTypeOfAttachment *mimetype.MIME
-	mimeTypeOfAttachment, detectError = mimetype.DetectReader(f)
-	if detectError != nil {
-		return "", detectError
-	}
+    var f *os.File
+    f, openError = os.Open(filename)
+    if openError != nil {
+        return "", openError
+    }
+    defer f.Close()
+    var detectError error
+    var mimeTypeOfAttachment *mimetype.MIME
+    mimeTypeOfAttachment, detectError = mimetype.DetectReader(f)
+    if detectError != nil {
+        return "", detectError
+    }
 
 ```
 
