@@ -231,12 +231,13 @@ type Email struct {
 }
 
 // // NewMail creates an Email and sets the content type of the body.
-func NewEmail(cfg *Config, from, to, subject, body string, attachments []Attachment) *Email {
+func NewEmail(cfg *Config, from, replyTo, to, subject, body string, attachments []Attachment) *Email {
 
 	em := Email{
 		Cfg:             cfg,
 		Subject:         subject,
 		From:            from,
+		ReplyTo:         replyTo,
 		To:              to,
 		Body:            body,
 		BodyContentType: "",
@@ -246,10 +247,10 @@ func NewEmail(cfg *Config, from, to, subject, body string, attachments []Attachm
 }
 
 // NewMailWithBodyContentType creates an Email and sets the content type of the body.
-func NewEmailWithBodyContentType(cfg *Config, from, to, subject, body string,
+func NewEmailWithBodyContentType(cfg *Config, from, replyTo, to, subject, body string,
 	attachments []Attachment, bodyContentType mail.ContentType) *Email {
 
-	em := NewEmail(cfg, from, to, subject, body, attachments)
+	em := NewEmail(cfg, from, replyTo, to, subject, body, attachments)
 
 	em.BodyContentType = bodyContentType
 
@@ -265,6 +266,10 @@ func (em *Email) Send(connection *Connection) error {
 	m.Subject(em.Subject)
 
 	if err := m.From(em.From); err != nil {
+		return err
+	}
+
+	if err := m.ReplyTo(em.ReplyTo); err != nil {
 		return err
 	}
 

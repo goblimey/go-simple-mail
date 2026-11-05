@@ -55,7 +55,7 @@ func TestConnectAndSend(t *testing.T) {
 
 	attachments := []Attachment{*attachment}
 
-	em1 := NewEmail(cfg, fromAddr, toAddr, "test email 1", body1, attachments)
+	em1 := NewEmail(cfg, fromAddr, "", toAddr, "test email 1", body1, attachments)
 
 	// This allows the previous statements to run when the calls that use it
 	// are commented out.
@@ -86,7 +86,7 @@ func TestConnectAndSend(t *testing.T) {
 	mimeTypeOfBody2 := mimetype.Detect([]byte(body2))
 	contentTypeOfBody2 := mail.ContentType(mimeTypeOfBody2.String())
 
-	em2 := NewEmailWithBodyContentType(cfg, fromAddr, toAddr, "test email 2", body2,
+	em2 := NewEmailWithBodyContentType(cfg, fromAddr, "", toAddr, "test email 2", body2,
 		attachments, contentTypeOfBody2)
 
 	_ = em2
