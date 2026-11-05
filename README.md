@@ -1,4 +1,6 @@
-# go-simple-mail
+go-simple-mail
+======
+
 A simple email client package written in Go
 
 There are lots of email client packages available 
@@ -23,7 +25,9 @@ Other styles of connection are not supported here.
 If you need a different style you need
 to call wneesson's go-mail directly.  This package may be a useful guide as to how to do that.
 
-## Installation
+Installation
+---
+
 ```
     git clone https://github.com/goblimey/go-simple-mail.git
     cd go-simple-mail
@@ -31,7 +35,8 @@ to call wneesson's go-mail directly.  This package may be a useful guide as to h
     go get github.com/gabriel-vasile/mimetype
 ```
 
-## Handling Secrets
+Handling Secrets
+-----
 
 The example below is nice and simple 
 but it doesn't handle its secrets well.
@@ -63,18 +68,19 @@ See [this package](https://pkg.go.dev/runtime/secret)
 for how to do it properly.
 
 
-## Sending an email with an attachment
+Sending an email with an attachment
+----------------
 
-```go
+```
     import (
         "os"
         "log/slog"
         "time"
         "github.com/goblimey/go-simple-mail" // Package email
     )
+```
 
-    .....
-
+```go
     const fromAddr = "johnsmith@gmail.com"
     const toAddr = "janesmith@gmail.com"
     const subject = "the email subject"
@@ -121,32 +127,40 @@ for how to do it properly.
     }
 
     connection.Close()
-
 ```
 
-## Content Type
+Content Type
+------------
 
-    The underlying mailer github.com/wneessen/go-mail needs to be given the content
-    type of the body of the email and any attached files.
+The underlying mailer github.com/wneessen/go-mail needs to be given the content
+type of the body of the email and any attached files.
 
-    This package uses github.com/gabriel-vasile/mimetype to figure out content types, but if the content is supplied as a file, that involves opening the file and reading it.
-    
-    The calling program can create an email object and use it over and over, for example to send the same email to more than one address.  The first call of Send figures out the content type and stores it in the email object. Subsequent calls pick up the content type and avoid the overhead of finding it again. Similarly, NewAttachment figures out the content type of the attached file and stores it in the Attachment object for reuse.  
+This package uses github.com/gabriel-vasile/mimetype to figure out content types, but if the content is supplied as a file, that involves opening the file and reading it.
 
-    If you know the content type you can supply it.Create the email object with NewEmailWithBodyContentType instead of NewEmail.
+The calling program can create an email object and use it over and over, for example to send the same email to more than one address.
+The first call of Send figures out the content type and stores it in the email object.
+Subsequent calls pick up the content type and avoid the overhead of finding it again. 
+Similarly, NewAttachment figures out the content type of the attached file and stores it in the Attachment object for reuse.  
 
-    The NewAttachmentWithContentType creates an Attachment object and allows you to set the content type to your chosen value.
+If you know the content type you can supply it.
+Create the email object with NewEmailWithBodyContentType instead of NewEmail.
 
-    To figure out the content type of a string, you need some extra imports:
+The NewAttachmentWithContentType creates an Attachment object and allows you to set the content type to your chosen value.
+
+To figure out the content type of a string, you need some extra imports:
 
 ```go
     import (
+		"os"
+        "log/slog"
+        "time"
+        "github.com/goblimey/go-simple-mail" // Package email
         "github.com/wneessen/go-mail"        // Package mail.
         "github.com/gabriel-vasile/mimetype" // Package mimetype.
     )
 ```
 
-    Then get the content type like so:
+Then get the content type like so:
 
 ```go
     const body = "<html><h1>this is a heading</h1>this is the running text</html>"
@@ -171,7 +185,6 @@ for how to do it properly.
     if detectError != nil {
         return "", detectError
     }
-
 ```
 
 Whichever account you connect with, many email providers restrict the sending
